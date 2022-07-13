@@ -17,6 +17,4 @@ limitations under the License.
 
 package v1alpha1
 
-type ClusterExpansion interface{}
-
-type WorkspaceExpansion interface{}
+type ServiceMetricsExpansion interface{}

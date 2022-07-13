@@ -17,6 +17,10 @@ limitations under the License.
 
 package v1alpha1
 
-type ClusterExpansion interface{}
+type KubeUserExpansion interface{}
 
-type WorkspaceExpansion interface{}
+type UserKubeConfigExpansion interface{}
+
+type WorkspaceRoleExpansion interface{}
+
+type WorkspaceRoleBindingExpansion interface{}

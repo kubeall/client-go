@@ -20,34 +20,44 @@ package v1alpha1
 import (
 	"net/http"
 
-	v1alpha1 "github.com/kubeall/api/cluster/v1alpha1"
-	"github.com/kubeall/client-go/cluster/clientset/versioned/scheme"
+	v1alpha1 "github.com/kubeall/api/rbac/v1alpha1"
+	"github.com/kubeall/client-go/rbac/clientset/versioned/scheme"
 	rest "k8s.io/client-go/rest"
 )
 
-type ClusterV1alpha1Interface interface {
+type RbacV1alpha1Interface interface {
 	RESTClient() rest.Interface
-	ClustersGetter
-	WorkspacesGetter
+	KubeUsersGetter
+	UserKubeConfigsGetter
+	WorkspaceRolesGetter
+	WorkspaceRoleBindingsGetter
 }
 
-// ClusterV1alpha1Client is used to interact with features provided by the cluster.kubeall.com group.
-type ClusterV1alpha1Client struct {
+// RbacV1alpha1Client is used to interact with features provided by the rbac.kubeall.com group.
+type RbacV1alpha1Client struct {
 	restClient rest.Interface
 }
 
-func (c *ClusterV1alpha1Client) Clusters() ClusterInterface {
-	return newClusters(c)
+func (c *RbacV1alpha1Client) KubeUsers() KubeUserInterface {
+	return newKubeUsers(c)
 }
 
-func (c *ClusterV1alpha1Client) Workspaces() WorkspaceInterface {
-	return newWorkspaces(c)
+func (c *RbacV1alpha1Client) UserKubeConfigs() UserKubeConfigInterface {
+	return newUserKubeConfigs(c)
 }
 
-// NewForConfig creates a new ClusterV1alpha1Client for the given config.
+func (c *RbacV1alpha1Client) WorkspaceRoles() WorkspaceRoleInterface {
+	return newWorkspaceRoles(c)
+}
+
+func (c *RbacV1alpha1Client) WorkspaceRoleBindings() WorkspaceRoleBindingInterface {
+	return newWorkspaceRoleBindings(c)
+}
+
+// NewForConfig creates a new RbacV1alpha1Client for the given config.
 // NewForConfig is equivalent to NewForConfigAndClient(c, httpClient),
 // where httpClient was generated with rest.HTTPClientFor(c).
-func NewForConfig(c *rest.Config) (*ClusterV1alpha1Client, error) {
+func NewForConfig(c *rest.Config) (*RbacV1alpha1Client, error) {
 	config := *c
 	if err := setConfigDefaults(&config); err != nil {
 		return nil, err
@@ -59,9 +69,9 @@ func NewForConfig(c *rest.Config) (*ClusterV1alpha1Client, error) {
 	return NewForConfigAndClient(&config, httpClient)
 }
 
-// NewForConfigAndClient creates a new ClusterV1alpha1Client for the given config and http client.
+// NewForConfigAndClient creates a new RbacV1alpha1Client for the given config and http client.
 // Note the http client provided takes precedence over the configured transport values.
-func NewForConfigAndClient(c *rest.Config, h *http.Client) (*ClusterV1alpha1Client, error) {
+func NewForConfigAndClient(c *rest.Config, h *http.Client) (*RbacV1alpha1Client, error) {
 	config := *c
 	if err := setConfigDefaults(&config); err != nil {
 		return nil, err
@@ -70,12 +80,12 @@ func NewForConfigAndClient(c *rest.Config, h *http.Client) (*ClusterV1alpha1Clie
 	if err != nil {
 		return nil, err
 	}
-	return &ClusterV1alpha1Client{client}, nil
+	return &RbacV1alpha1Client{client}, nil
 }
 
-// NewForConfigOrDie creates a new ClusterV1alpha1Client for the given config and
+// NewForConfigOrDie creates a new RbacV1alpha1Client for the given config and
 // panics if there is an error in the config.
-func NewForConfigOrDie(c *rest.Config) *ClusterV1alpha1Client {
+func NewForConfigOrDie(c *rest.Config) *RbacV1alpha1Client {
 	client, err := NewForConfig(c)
 	if err != nil {
 		panic(err)
@@ -83,9 +93,9 @@ func NewForConfigOrDie(c *rest.Config) *ClusterV1alpha1Client {
 	return client
 }
 
-// New creates a new ClusterV1alpha1Client for the given RESTClient.
-func New(c rest.Interface) *ClusterV1alpha1Client {
-	return &ClusterV1alpha1Client{c}
+// New creates a new RbacV1alpha1Client for the given RESTClient.
+func New(c rest.Interface) *RbacV1alpha1Client {
+	return &RbacV1alpha1Client{c}
 }
 
 func setConfigDefaults(config *rest.Config) error {
@@ -103,7 +113,7 @@ func setConfigDefaults(config *rest.Config) error {
 
 // RESTClient returns a RESTClient that is used to communicate
 // with API server by this client implementation.
-func (c *ClusterV1alpha1Client) RESTClient() rest.Interface {
+func (c *RbacV1alpha1Client) RESTClient() rest.Interface {
 	if c == nil {
 		return nil
 	}

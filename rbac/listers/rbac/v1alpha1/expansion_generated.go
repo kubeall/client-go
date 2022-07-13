@@ -17,10 +17,18 @@ limitations under the License.
 
 package v1alpha1
 
-// ClusterListerExpansion allows custom methods to be added to
-// ClusterLister.
-type ClusterListerExpansion interface{}
+// KubeUserListerExpansion allows custom methods to be added to
+// KubeUserLister.
+type KubeUserListerExpansion interface{}
 
-// WorkspaceListerExpansion allows custom methods to be added to
-// WorkspaceLister.
-type WorkspaceListerExpansion interface{}
+// UserKubeConfigListerExpansion allows custom methods to be added to
+// UserKubeConfigLister.
+type UserKubeConfigListerExpansion interface{}
+
+// WorkspaceRoleListerExpansion allows custom methods to be added to
+// WorkspaceRoleLister.
+type WorkspaceRoleListerExpansion interface{}
+
+// WorkspaceRoleBindingListerExpansion allows custom methods to be added to
+// WorkspaceRoleBindingLister.
+type WorkspaceRoleBindingListerExpansion interface{}

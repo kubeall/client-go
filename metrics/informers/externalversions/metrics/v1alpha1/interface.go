@@ -18,15 +18,13 @@ limitations under the License.
 package v1alpha1
 
 import (
-	internalinterfaces "github.com/kubeall/client-go/cluster/informers/externalversions/internalinterfaces"
+	internalinterfaces "github.com/kubeall/client-go/metrics/informers/externalversions/internalinterfaces"
 )
 
 // Interface provides access to all the informers in this group version.
 type Interface interface {
-	// Clusters returns a ClusterInformer.
-	Clusters() ClusterInformer
-	// Workspaces returns a WorkspaceInformer.
-	Workspaces() WorkspaceInformer
+	// ServiceMetricses returns a ServiceMetricsInformer.
+	ServiceMetricses() ServiceMetricsInformer
 }
 
 type version struct {
@@ -40,12 +38,7 @@ func New(f internalinterfaces.SharedInformerFactory, namespace string, tweakList
 	return &version{factory: f, namespace: namespace, tweakListOptions: tweakListOptions}
 }
 
-// Clusters returns a ClusterInformer.
-func (v *version) Clusters() ClusterInformer {
-	return &clusterInformer{factory: v.factory, tweakListOptions: v.tweakListOptions}
-}
-
-// Workspaces returns a WorkspaceInformer.
-func (v *version) Workspaces() WorkspaceInformer {
-	return &workspaceInformer{factory: v.factory, tweakListOptions: v.tweakListOptions}
+// ServiceMetricses returns a ServiceMetricsInformer.
+func (v *version) ServiceMetricses() ServiceMetricsInformer {
+	return &serviceMetricsInformer{factory: v.factory, namespace: v.namespace, tweakListOptions: v.tweakListOptions}
 }

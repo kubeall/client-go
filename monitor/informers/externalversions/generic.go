@@ -20,7 +20,7 @@ package externalversions
 import (
 	"fmt"
 
-	v1alpha1 "github.com/kubeall/api/cluster/v1alpha1"
+	v1alpha1 "github.com/kubeall/api/monitor/v1alpha1"
 	schema "k8s.io/apimachinery/pkg/runtime/schema"
 	cache "k8s.io/client-go/tools/cache"
 )
@@ -51,11 +51,9 @@ func (f *genericInformer) Lister() cache.GenericLister {
 // TODO extend this to unknown resources with a client pool
 func (f *sharedInformerFactory) ForResource(resource schema.GroupVersionResource) (GenericInformer, error) {
 	switch resource {
-	// Group=cluster.kubeall.com, Version=v1alpha1
-	case v1alpha1.SchemeGroupVersion.WithResource("clusters"):
-		return &genericInformer{resource: resource.GroupResource(), informer: f.Cluster().V1alpha1().Clusters().Informer()}, nil
-	case v1alpha1.SchemeGroupVersion.WithResource("workspaces"):
-		return &genericInformer{resource: resource.GroupResource(), informer: f.Cluster().V1alpha1().Workspaces().Informer()}, nil
+	// Group=monitor.kubeall.com, Version=v1alpha1
+	case v1alpha1.SchemeGroupVersion.WithResource("projectarchitectures"):
+		return &genericInformer{resource: resource.GroupResource(), informer: f.Monitor().V1alpha1().ProjectArchitectures().Informer()}, nil
 
 	}
 

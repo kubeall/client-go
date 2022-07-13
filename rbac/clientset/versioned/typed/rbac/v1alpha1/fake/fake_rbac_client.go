@@ -18,26 +18,34 @@ limitations under the License.
 package fake
 
 import (
-	v1alpha1 "github.com/kubeall/client-go/cluster/clientset/versioned/typed/cluster/v1alpha1"
+	v1alpha1 "github.com/kubeall/client-go/rbac/clientset/versioned/typed/rbac/v1alpha1"
 	rest "k8s.io/client-go/rest"
 	testing "k8s.io/client-go/testing"
 )
 
-type FakeClusterV1alpha1 struct {
+type FakeRbacV1alpha1 struct {
 	*testing.Fake
 }
 
-func (c *FakeClusterV1alpha1) Clusters() v1alpha1.ClusterInterface {
-	return &FakeClusters{c}
+func (c *FakeRbacV1alpha1) KubeUsers() v1alpha1.KubeUserInterface {
+	return &FakeKubeUsers{c}
 }
 
-func (c *FakeClusterV1alpha1) Workspaces() v1alpha1.WorkspaceInterface {
-	return &FakeWorkspaces{c}
+func (c *FakeRbacV1alpha1) UserKubeConfigs() v1alpha1.UserKubeConfigInterface {
+	return &FakeUserKubeConfigs{c}
+}
+
+func (c *FakeRbacV1alpha1) WorkspaceRoles() v1alpha1.WorkspaceRoleInterface {
+	return &FakeWorkspaceRoles{c}
+}
+
+func (c *FakeRbacV1alpha1) WorkspaceRoleBindings() v1alpha1.WorkspaceRoleBindingInterface {
+	return &FakeWorkspaceRoleBindings{c}
 }
 
 // RESTClient returns a RESTClient that is used to communicate
 // with API server by this client implementation.
-func (c *FakeClusterV1alpha1) RESTClient() rest.Interface {
+func (c *FakeRbacV1alpha1) RESTClient() rest.Interface {
 	var ret *rest.RESTClient
 	return ret
 }

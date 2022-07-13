@@ -20,7 +20,7 @@ package externalversions
 import (
 	"fmt"
 
-	v1alpha1 "github.com/kubeall/api/cluster/v1alpha1"
+	v1alpha1 "github.com/kubeall/api/rbac/v1alpha1"
 	schema "k8s.io/apimachinery/pkg/runtime/schema"
 	cache "k8s.io/client-go/tools/cache"
 )
@@ -51,11 +51,15 @@ func (f *genericInformer) Lister() cache.GenericLister {
 // TODO extend this to unknown resources with a client pool
 func (f *sharedInformerFactory) ForResource(resource schema.GroupVersionResource) (GenericInformer, error) {
 	switch resource {
-	// Group=cluster.kubeall.com, Version=v1alpha1
-	case v1alpha1.SchemeGroupVersion.WithResource("clusters"):
-		return &genericInformer{resource: resource.GroupResource(), informer: f.Cluster().V1alpha1().Clusters().Informer()}, nil
-	case v1alpha1.SchemeGroupVersion.WithResource("workspaces"):
-		return &genericInformer{resource: resource.GroupResource(), informer: f.Cluster().V1alpha1().Workspaces().Informer()}, nil
+	// Group=rbac.kubeall.com, Version=v1alpha1
+	case v1alpha1.SchemeGroupVersion.WithResource("kubeusers"):
+		return &genericInformer{resource: resource.GroupResource(), informer: f.Rbac().V1alpha1().KubeUsers().Informer()}, nil
+	case v1alpha1.SchemeGroupVersion.WithResource("userkubeconfigs"):
+		return &genericInformer{resource: resource.GroupResource(), informer: f.Rbac().V1alpha1().UserKubeConfigs().Informer()}, nil
+	case v1alpha1.SchemeGroupVersion.WithResource("workspaceroles"):
+		return &genericInformer{resource: resource.GroupResource(), informer: f.Rbac().V1alpha1().WorkspaceRoles().Informer()}, nil
+	case v1alpha1.SchemeGroupVersion.WithResource("workspacerolebindings"):
+		return &genericInformer{resource: resource.GroupResource(), informer: f.Rbac().V1alpha1().WorkspaceRoleBindings().Informer()}, nil
 
 	}
 
